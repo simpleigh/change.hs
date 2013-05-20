@@ -39,7 +39,9 @@ bellChars :: String
 bellChars = "1234567890ETABCDFGHJKLMNPQRSUVWY"
 
 fromChar :: Char -> Bell
-fromChar c = Bell $ x + 1 where Just x = elemIndex c bellChars
+fromChar c = case elemIndex c bellChars of
+    Just x  -> Bell $ x + 1
+    Nothing -> error $ "Character '" ++ [c] ++ "' not valid"
 
 toChar :: Bell -> Char
 toChar x = bellChars !! (toInt x - 1)
