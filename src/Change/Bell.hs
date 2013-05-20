@@ -26,9 +26,11 @@ instance Enum Bell where
                                      | otherwise                = minBound
 
 fromInt :: Int -> Bell
-fromInt i | i < minBound = error $ "Bell number must be >= " ++ show (minBound :: Bell)
-          | i > maxBound = error $ "Bell number must be <= " ++ show (maxBound :: Bell)
+fromInt i | i < min = error $ "Bell number must be >= " ++ show min
+          | i > max = error $ "Bell number must be <= " ++ show max
           | otherwise = Bell i
+          where min = toInt (minBound :: Bell)
+                max = toInt (maxBound :: Bell)
 
 toInt :: Bell -> Int
 toInt (Bell i) = i
