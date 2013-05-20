@@ -16,7 +16,7 @@ instance Show Bell where
 instance Read Bell where
     readsPrec _ []     = []
     readsPrec _ (c:cs) = case elemIndex c bellChars of
-                             Just x  -> [(fromChar c, cs)]
+                             Just _  -> [(fromChar c, cs)]
                              Nothing -> []
 
 instance Bounded Bell where
@@ -34,11 +34,11 @@ instance Enum Bell where
                                  | otherwise                = minBound
 
 fromInt :: Int -> Bell
-fromInt i | i < min = error $ "Bell number must be >= " ++ show min
-          | i > max = error $ "Bell number must be <= " ++ show max
+fromInt i | i < minBell = error $ "Bell number must be >= " ++ show minBell
+          | i > maxBell = error $ "Bell number must be <= " ++ show maxBell
           | otherwise = Bell i
-          where min = toInt (minBound :: Bell)
-                max = toInt (maxBound :: Bell)
+          where minBell = toInt (minBound :: Bell)
+                maxBell = toInt (maxBound :: Bell)
 
 toInt :: Bell -> Int
 toInt (Bell i) = i
