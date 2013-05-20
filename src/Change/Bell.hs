@@ -14,10 +14,10 @@ instance Show Bell where
     showsPrec _ x = (:) $ toChar x
 
 instance Read Bell where
+    readsPrec _ []     = []
     readsPrec _ (c:cs) = case elemIndex c bellChars of
                              Just x  -> [(fromChar c, cs)]
                              Nothing -> []
-    readsPrec _ []     = []
 
 instance Bounded Bell where
     minBound = Bell 1
@@ -29,10 +29,9 @@ instance Enum Bell where
     toEnum           = fromInt
     fromEnum         = toInt
     enumFrom x       = enumFromTo x maxBound
-    enumFromThen x y = enumFromThenTo x y bound
-                           where
-                               bound | fromEnum y >= fromEnum x = maxBound
-                                     | otherwise                = minBound
+    enumFromThen x y = enumFromThenTo x y bound where
+                           bound | fromEnum y >= fromEnum x = maxBound
+                                 | otherwise                = minBound
 
 fromInt :: Int -> Bell
 fromInt i | i < min = error $ "Bell number must be >= " ++ show min
@@ -49,8 +48,8 @@ bellChars = "1234567890ETABCDFGHJKLMNPQRSUVWY"
 
 fromChar :: Char -> Bell
 fromChar c = case elemIndex c bellChars of
-    Just x  -> Bell $ x + 1
-    Nothing -> error $ "Character '" ++ [c] ++ "' not valid"
+                 Just x  -> Bell $ x + 1
+                 Nothing -> error $ "Character '" ++ [c] ++ "' not valid"
 
 toChar :: Bell -> Char
 toChar x = bellChars !! (toInt x - 1)
