@@ -11,7 +11,8 @@ stability:      alpha
 synopsis:       Change-ringing library for Haskell
 
 library
-  exposed-modules: Change.Bell
+  exposed-modules: Change.Bell,
+                   Change.Row
   build-depends:   base >= 4
   hs-source-dirs:  src
   ghc-options:     -Wall

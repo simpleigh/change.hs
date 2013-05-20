@@ -1,7 +1,11 @@
-module Change.Row
-(Row
-) where
+module Change.Row (
+         Row(),
+         rounds
+       ) where
 
 import Change.Bell
 
-type Row = [Bell]
+data Row = Row [Bell] deriving (Eq, Ord, Show, Read)
+
+rounds :: Int -> Row
+rounds i = Row [ fromInt 1 .. fromInt i]
