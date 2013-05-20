@@ -8,7 +8,16 @@ module Change.Bell (
 
 import Data.List
 
-data Bell = Bell Int deriving (Eq, Ord, Show, Read)
+data Bell = Bell Int deriving (Eq, Ord)
+
+instance Show Bell where
+    showsPrec _ x = (:) $ toChar x
+
+instance Read Bell where
+    readsPrec _ (c:cs) = case elemIndex c bellChars of
+                             Just x  -> [(fromChar c, cs)]
+                             Nothing -> []
+    readsPrec _ []     = []
 
 instance Bounded Bell where
     minBound = Bell 1
