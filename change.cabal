@@ -3,7 +3,7 @@ version:        0.1
 cabal-version:  >= 1.2
 build-type:     Simple
 license:        LGPL-2.1
-license-file:   COPYING.LGPL
+license-file:   LICENSE
 copyright:      Copyright (C) 2013  Leigh Simpson <code@simpleigh.com>
 author:         Leigh Simpson <code@simpleigh.com>
 maintainer:     Leigh Simpson <code@simpleigh.com>
