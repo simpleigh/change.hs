@@ -22,5 +22,5 @@ test-suite Bell
   main-is:         Change/BellTest.hs
   build-depends:   base >= 4, HTF > 0.9, Cabal
   other-modules:   Change.Bell
-  hs-source-dirs:  src
+  hs-source-dirs:  testsuite/tests, src
   ghc-options:     -Wall -rtsopts
