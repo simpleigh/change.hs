@@ -1,3 +1,8 @@
+-- |
+-- Module     : Data.Change.Bell
+-- Copyright  : Copyright (C) 2013  Leigh Simpson <code@simpleigh.com>
+-- License    : GNU LGPL 2.1
+--
 module Data.Change.Bell (
     -- * Bell type
     Bell(),
@@ -16,9 +21,12 @@ import Data.List
 
 -- | The Bell data type.
 -- The lowest-level component of the library, representing an individual bell.
--- Internally a Bell is represented as an Int.
+-- Internally a Bell is represented as an Int between 1 and 32.
 -- Functions are provided for easy conversion between other types.
-newtype Bell = Bell Int deriving (Eq, Ord)
+newtype Bell =
+    Bell { -- | Get Int bell number.
+           toInt :: Int
+         } deriving (Eq, Ord)
 
 -- | Make a bell from an Int bell number.
 fromInt                 :: Int -> Bell
@@ -27,10 +35,6 @@ fromInt i | i < minBell = error $ "Bell number must be >= " ++ show minBell
           | otherwise   = Bell i
           where minBell = toInt (minBound :: Bell)
                 maxBell = toInt (maxBound :: Bell)
-
--- | Get Int bell number.
-toInt          :: Bell -> Int
-toInt (Bell i) = i
 
 -- | Attempt to produce a bell from a Char.
 -- The characters @1234567890ETABCDFGHJKLMNPQRSUVWY@ are used to represent
