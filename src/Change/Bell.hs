@@ -33,14 +33,14 @@ instance Enum Bell where
                            bound | fromEnum y >= fromEnum x = maxBound
                                  | otherwise                = minBound
 
-fromInt :: Int -> Bell
+fromInt                 :: Int -> Bell
 fromInt i | i < minBell = error $ "Bell number must be >= " ++ show minBell
           | i > maxBell = error $ "Bell number must be <= " ++ show maxBell
-          | otherwise = Bell i
+          | otherwise   = Bell i
           where minBell = toInt (minBound :: Bell)
                 maxBell = toInt (maxBound :: Bell)
 
-toInt :: Bell -> Int
+toInt          :: Bell -> Int
 toInt (Bell i) = i
 
 bellChars :: String
@@ -49,5 +49,5 @@ bellChars = "1234567890ETABCDFGHJKLMNPQRSUVWY"
 fromChar   :: Char -> Maybe Bell
 fromChar c = fmap (fromInt . (+1)) $ elemIndex c bellChars
 
-toChar :: Bell -> Char
+toChar   :: Bell -> Char
 toChar x = bellChars !! (toInt x - 1)
