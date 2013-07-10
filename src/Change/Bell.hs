@@ -8,15 +8,15 @@ module Change.Bell (
 
 import Data.List
 
-data Bell = Bell Int deriving (Eq, Ord)
+newtype Bell = Bell Int deriving (Eq, Ord)
 
 instance Show Bell where
     showsPrec _ x = (:) $ toChar x
 
 instance Read Bell where
     readsPrec _ []     = []
-    readsPrec _ (c:cs) = case elemIndex c bellChars of
-                             Just _  -> [(fromChar c, cs)]
+    readsPrec _ (c:cs) = case fromChar c of
+                             Just b  -> [(b, cs)]
                              Nothing -> []
 
 instance Bounded Bell where
@@ -46,10 +46,8 @@ toInt (Bell i) = i
 bellChars :: String
 bellChars = "1234567890ETABCDFGHJKLMNPQRSUVWY"
 
-fromChar :: Char -> Bell
-fromChar c = case elemIndex c bellChars of
-                 Just x  -> Bell $ x + 1
-                 Nothing -> error $ "Character '" ++ [c] ++ "' not valid"
+fromChar   :: Char -> Maybe Bell
+fromChar c = fmap (fromInt . (+1)) $ elemIndex c bellChars
 
 toChar :: Bell -> Char
 toChar x = bellChars !! (toInt x - 1)
