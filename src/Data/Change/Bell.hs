@@ -1,4 +1,4 @@
-module Change.Bell (
+module Data.Change.Bell (
     -- * Bell type
     Bell(),
     

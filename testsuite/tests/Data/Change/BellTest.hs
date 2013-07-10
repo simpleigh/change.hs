@@ -2,7 +2,7 @@
 
 import Test.Framework
 
-import Change.Bell
+import Data.Change.Bell
 
 test_test = assertEqual (toChar $ fromChar '1') '1'
 

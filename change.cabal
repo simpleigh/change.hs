@@ -11,16 +11,16 @@ stability:      alpha
 synopsis:       Change-ringing library for Haskell
 
 library
-  exposed-modules: Change.Bell,
-                   Change.Row
+  exposed-modules: Data.Change.Bell,
+                   Data.Change.Row
   build-depends:   base >= 4
   hs-source-dirs:  src
   ghc-options:     -Wall
 
 test-suite Bell
   type:            exitcode-stdio-1.0
-  main-is:         Change/BellTest.hs
+  main-is:         Data/Change/BellTest.hs
   build-depends:   base >= 4, HTF > 0.9, Cabal
-  other-modules:   Change.Bell
+  other-modules:   Data.Change.Bell
   hs-source-dirs:  testsuite/tests, src
   ghc-options:     -Wall -rtsopts
