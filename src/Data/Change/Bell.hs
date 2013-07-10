@@ -2,11 +2,11 @@ module Data.Change.Bell (
     -- * Bell type
     Bell(),
     
-    -- * Conversions to and from Int
+    -- * Conversions to Int
     fromInt,
     toInt,
     
-    -- * Conversions to and from Char
+    -- * Conversions to Char
     fromChar,
     toChar
     
