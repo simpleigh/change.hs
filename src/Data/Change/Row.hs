@@ -110,17 +110,17 @@ findBell                 :: Row -> Bell -> Int
 findBell (Row bs) b | toInt b > length bs = error "Bell out of range"
                     | otherwise           = (1+) $ length $ takeWhile (/= b) bs
 
--- | Transpose a row by another
+-- | Transpose a row by another.
 transpose     :: Row -> Row -> Row
 transpose x y | bells x /= bells y = error "Mismatched row length"
               | otherwise          = Row [getBell x (toInt b) | b <- toList y]
 
--- | Divide a row by another
+-- | Divide a row by another.
 divide     :: Row -> Row -> Row
 divide x y | bells x /= bells y = error "Mismatched row length"
            | otherwise          = transpose x (inverse y)
 
--- | Find the inverse of a row
+-- | Find the inverse of a row.
 inverse   :: Row -> Row
 inverse r = Row [fromInt $ findBell r b | b <- toList $ rounds $ bells r]
 
@@ -144,7 +144,7 @@ isCyclicLeadHead _ = error "Not implemented"
 sign   :: Row -> Parity
 sign _ = error "Not implemented"
 
--- | Calculates a unique index number for the row
+-- | Calculates a unique index number for the row.
 number   :: Row -> Integer
 number _ = error "Not implemented"
 
@@ -164,13 +164,13 @@ instance Ord Row where
               ix = number x
               iy = number y
 
--- | Type representing the length of a row
+-- | Type representing the length of a row.
 newtype Length =
     Length { -- | Access row length.
              getLength :: Int
            } deriving (Eq, Ord, Show, Read)
 
--- | Construct a row length
+-- | Construct a row length.
 makeLength :: Int -> Length
 makeLength i | i < minLength = error $ "Length must be >= " ++ show minLength
              | i > maxLength = error $ "Length must be <= " ++ show maxLength
@@ -182,5 +182,5 @@ instance Bounded Length where
     minBound = Length 1
     maxBound = Length $ toInt $ (maxBound :: Bell)
 
--- | Type representing the parity of a row
+-- | Type representing the parity of a row.
 data Parity = Even | Odd deriving (Eq, Enum, Show, Read)
