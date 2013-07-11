@@ -85,7 +85,7 @@ pblh _ _ = error "Not implemented"
 
 -- | Retrieve a bell by index.
 getBell            :: Row -> Int -> Bell
-getBell (Row bs) i = (!!) bs (i - 1)
+getBell (Row bs) i = bs !! (i - 1)
 
 -- | Find the index of a bell. Indices are 1-based, i.e. they are between 1 and
 -- @n@, the number of bells.
