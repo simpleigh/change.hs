@@ -39,6 +39,7 @@ module Data.Change.Row (
     ) where
 
 import Data.Change.Bell
+import Data.List (transpose)
 
 -- | The row type
 -- A row is defined as a list of bells with the following restrictions:
@@ -65,8 +66,9 @@ kings (Length 1) = Row [fromInt 1]
 kings (Length n) = Row $ reverse [fromInt 1, fromInt 3 .. fromInt n] ++ [fromInt 2, fromInt 4 .. fromInt n]
 
 -- | Construct tittums on @n@ bells.
-tittums   :: Length -> Row
-tittums _ = error "Not implemented"
+tittums            :: Length -> Row
+tittums (Length n) = Row $ concat $ transpose [[fromInt 1 .. fromInt half], [fromInt $ half + 1 .. fromInt n]]
+                         where half = (n + 1) `div` 2
 
 -- | Construct reverse rounds on @n@ bells.
 reverseRounds            :: Length -> Row
