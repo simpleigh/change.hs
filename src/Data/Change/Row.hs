@@ -25,6 +25,7 @@ module Data.Change.Row (
     isRounds,
     isPblh,
     sign,
+    index,
     cycles,
     order,
     
@@ -42,7 +43,7 @@ import Data.Change.Row.Parity
 newtype Row =
     Row { -- | Returns the row as a @Bell@ list.
           toList :: [Bell]
-    } deriving (Eq, Ord, Show, Read)
+    } deriving (Eq, Show, Read)
 
 -- | Construct rounds on @n@ bells.
 rounds   :: Int -> Row
@@ -105,6 +106,10 @@ isPblh _ _ = error "Not implemented"
 sign   :: Row -> Parity
 sign _ = error "Not implemented"
 
+-- | Calculates a unique index for the row
+index   :: Row -> Integer
+index _ = error "Not implemented"
+
 -- | Express the row as a product of disjoint cycles.
 cycles   :: Row -> [[Bell]]
 cycles _ = error "Not implemented"
@@ -112,3 +117,11 @@ cycles _ = error "Not implemented"
 -- | Calculate the order of the row.
 order   :: Row -> Int
 order _ = error "Not implemented"
+
+instance Ord Row where
+    compare x y | cx /= cy  = compare cx cy
+                | otherwise = compare ix iy
+        where cx = bells x
+              cy = bells y
+              ix = index x
+              iy = index y
