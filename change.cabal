@@ -12,8 +12,7 @@ synopsis:       Change-ringing library for Haskell
 
 library
   exposed-modules: Data.Change.Bell,
-                   Data.Change.Row,
-                   Data.Change.Row.Parity
+                   Data.Change.Row
   build-depends:   base >= 4
   hs-source-dirs:  src
   ghc-options:     -Wall

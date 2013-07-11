@@ -30,10 +30,15 @@ module Data.Change.Row (
     cycles,
     order,
     
+    -- * Additional types
+    Length(),
+    getLength,
+    makeLength,
+    Parity(Even, Odd),
+    
     ) where
 
 import Data.Change.Bell
-import Data.Change.Row.Parity
 
 -- | The row type
 -- A row is defined as a list of bells with the following restrictions:
@@ -47,39 +52,39 @@ newtype Row =
     } deriving (Eq, Show, Read)
 
 -- | Construct rounds on @n@ bells.
-rounds   :: Int -> Row
-rounds i = Row [fromInt 1 .. fromInt i]
+rounds            :: Length -> Row
+rounds (Length n) = Row [fromInt 1 .. fromInt n]
 
 -- | Construct queens on @n@ bells.
-queens   :: Int -> Row
-queens i = Row $ [fromInt 1, fromInt 3 .. fromInt i] ++ [fromInt 2, fromInt 4 .. fromInt i]
+queens            :: Length -> Row
+queens (Length n) = Row $ [fromInt 1, fromInt 3 .. fromInt n] ++ [fromInt 2, fromInt 4 .. fromInt n]
 
 -- | Construct kings on @n@ bells.
-kings   :: Int -> Row
-kings 1 = Row [fromInt 1]
-kings i = Row $ reverse [fromInt 1, fromInt 3 .. fromInt i] ++ [fromInt 2, fromInt 4 .. fromInt i]
+kings            :: Length -> Row
+kings (Length 1) = Row [fromInt 1]
+kings (Length n) = Row $ reverse [fromInt 1, fromInt 3 .. fromInt n] ++ [fromInt 2, fromInt 4 .. fromInt n]
 
 -- | Construct tittums on @n@ bells.
-tittums   :: Int -> Row
+tittums   :: Length -> Row
 tittums _ = error "Not implemented"
 
 -- | Construct reverse rounds on @n@ bells.
-reverseRounds   :: Int -> Row
-reverseRounds 1 = Row [fromInt 1]
-reverseRounds i = Row [fromInt i, fromInt (i - 1) .. fromInt 1]
+reverseRounds            :: Length -> Row
+reverseRounds (Length 1) = Row [fromInt 1]
+reverseRounds (Length n) = Row [fromInt n, fromInt (n - 1) .. fromInt 1]
 
 -- | Construct a cyclic lead head.
 -- Computed as @(13456..2)^c@ on @n@ bells with @h@ hunt bells.
-cyclic       :: Int -- ^ Number of bells, @n@
-             -> Int -- ^ Number of hunt bells, @h@
+cyclic       :: Length -- ^ Number of bells, @n@
+             -> Length -- ^ Number of hunt bells, @h@
              -> Int -- ^ Lead head number, @c@
              -> Row
 cyclic _ _ _ = error "Not implemented"
 
 -- | Construct a plain bob lead head.
 -- Returns the first plain bob lead head on @n@ bells with @h@ hunt bells.
-pblh     :: Int -- ^ Number of bells, @n@
-         -> Int -- ^ Number of hunt bells, @h@
+pblh     :: Length -- ^ Number of bells, @n@
+         -> Length -- ^ Number of hunt bells, @h@
          -> Row
 pblh _ _ = error "Not implemented"
 
@@ -94,8 +99,8 @@ findBell (Row bs) b | toInt b > length bs = error "Bell out of range"
                     | otherwise           = (1+) $ length $ takeWhile (/= b) bs
 
 -- | How many bells are in the row?
-bells          :: Row -> Int
-bells (Row bs) = length bs
+bells          :: Row -> Length
+bells (Row bs) = Length $ length bs
 
 -- | Is the row rounds?
 isRounds   :: Row -> Bool
@@ -103,8 +108,8 @@ isRounds r = r == (rounds . bells $ r)
 
 -- | Is the row a plain bob lead head?
 isPblh :: Row -- ^ Row
-       -> Int -- ^ Number of hunt bells, @h@
-       -> Maybe Int
+       -> Length -- ^ Number of hunt bells, @h@
+       -> Maybe Length
 isPblh _ _ = error "Not implemented"
 
 -- | Is the row odd or even?
@@ -120,7 +125,7 @@ cycles   :: Row -> [[Bell]]
 cycles _ = error "Not implemented"
 
 -- | Calculate the order of the row.
-order   :: Row -> Int
+order   :: Row -> Integer
 order _ = error "Not implemented"
 
 instance Ord Row where
@@ -130,3 +135,24 @@ instance Ord Row where
               cy = bells y
               ix = index x
               iy = index y
+
+-- | Type representing the length of a row
+newtype Length =
+    Length { -- | Access row length.
+             getLength :: Int
+           } deriving (Eq, Ord, Show, Read)
+
+-- | Construct a row length
+makeLength :: Int -> Length
+makeLength i | i < minLength = error $ "Length must be >= " ++ show minLength
+             | i > maxLength = error $ "Length must be <= " ++ show maxLength
+             | otherwise     = Length i
+             where minLength = getLength (minBound :: Length)
+                   maxLength = getLength (maxBound :: Length)
+
+instance Bounded Length where
+    minBound = Length 1
+    maxBound = Length $ toInt $ (maxBound :: Bell)
+
+-- | Type representing the parity of a row
+data Parity = Even | Odd deriving (Eq, Enum, Show, Read)
