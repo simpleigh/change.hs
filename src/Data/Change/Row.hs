@@ -70,8 +70,7 @@ tittums _ = error "Not implemented"
 
 -- | Construct reverse rounds on @n@ bells.
 reverseRounds            :: Length -> Row
-reverseRounds (Length 1) = Row [fromInt 1]
-reverseRounds (Length n) = Row [fromInt n, fromInt (n - 1) .. fromInt 1]
+reverseRounds (Length n) = Row $ reverse [fromInt 1 .. fromInt n]
 
 -- | Construct a cyclic lead head.
 -- Computed as @(13456..2)^c@ on @n@ bells with @h@ hunt bells.
