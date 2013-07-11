@@ -97,7 +97,7 @@ plainBobLeadHead     :: Length -- ^ Number of bells, @n@
 plainBobLeadHead _ _ = error "Not implemented"
 
 -- | Generates a row from an index number.
-fromNumber   :: Integer -> Row
+fromNumber   :: Number -> Row
 fromNumber _ = error "Not implemented"
 
 -- | Retrieve a bell by index.
@@ -145,7 +145,7 @@ sign   :: Row -> Parity
 sign _ = error "Not implemented"
 
 -- | Calculates a unique index number for the row.
-number   :: Row -> Integer
+number   :: Row -> Number
 number _ = error "Not implemented"
 
 -- | Express the row as a product of disjoint cycles.
@@ -171,7 +171,7 @@ newtype Length =
            } deriving (Eq, Ord, Show, Read)
 
 -- | Construct a row length.
-makeLength :: Int -> Length
+makeLength   :: Int -> Length
 makeLength i | i < minLength = error $ "Length must be >= " ++ show minLength
              | i > maxLength = error $ "Length must be <= " ++ show maxLength
              | otherwise     = Length i
@@ -184,3 +184,6 @@ instance Bounded Length where
 
 -- | Type representing the parity of a row.
 data Parity = Even | Odd deriving (Eq, Enum, Show, Read)
+
+-- | Type representing a row number.
+type Number = Integer
