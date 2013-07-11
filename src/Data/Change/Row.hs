@@ -19,6 +19,7 @@ module Data.Change.Row (
     -- * Accessing rows
     toList,
     getBell,
+    findBell,
     
     -- * Properties of rows
     bells,
@@ -87,6 +88,12 @@ pblh _ _ = error "Not implemented"
 -- | Retrieve a bell by index.
 getBell            :: Row -> Int -> Bell
 getBell (Row bs) i = (!!) bs (i - 1)
+
+-- | Find the index of a bell. Indices are 1-based, i.e. they are between 1 and
+-- @n@, the number of bells.
+findBell                 :: Row -> Bell -> Int
+findBell (Row bs) b | toInt b > length bs = error "Bell out of range"
+                    | otherwise           = (1+) $ length $ takeWhile (/= b) bs
 
 -- | How many bells are in the row?
 bells          :: Row -> Int
