@@ -46,15 +46,18 @@ newtype Row =
 
 -- | Construct rounds on @n@ bells.
 rounds   :: Int -> Row
-rounds i = Row [ fromInt 1 .. fromInt i]
+rounds i = Row [fromInt 1 .. fromInt i]
 
 -- | Construct queens on @n@ bells.
 queens   :: Int -> Row
-queens _ = error "Not implemented"
+queens i = Row $ [fromInt 1, fromInt 3 .. fromInt i] ++ [fromInt 2, fromInt 4 .. fromInt i]
 
 -- | Construct kings on @n@ bells.
 kings   :: Int -> Row
-kings _ = error "Not implemented"
+kings 1 = Row [fromInt 1]
+kings 2 = Row [fromInt 1, fromInt 2]
+kings i = Row $ [fromInt j, fromInt (j - 2) .. fromInt 1] ++ [fromInt 2, fromInt 4 .. fromInt i]
+              where j = if even i then i - 1 else i
 
 -- | Construct tittums on @n@ bells.
 tittums   :: Int -> Row
@@ -62,8 +65,8 @@ tittums _ = error "Not implemented"
 
 -- | Construct reverse rounds on @n@ bells.
 reverseRounds   :: Int -> Row
-reverseRounds 1 = Row [ fromInt 1 ]
-reverseRounds i = Row [ fromInt i, fromInt (i - 1) .. fromInt 1 ]
+reverseRounds 1 = Row [fromInt 1]
+reverseRounds i = Row [fromInt i, fromInt (i - 1) .. fromInt 1]
 
 -- | Construct a cyclic lead head.
 -- Computed as @(13456..2)^c@ on @n@ bells with @h@ hunt bells.
