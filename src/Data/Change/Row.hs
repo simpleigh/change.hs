@@ -57,9 +57,7 @@ queens i = Row $ [fromInt 1, fromInt 3 .. fromInt i] ++ [fromInt 2, fromInt 4 ..
 -- | Construct kings on @n@ bells.
 kings   :: Int -> Row
 kings 1 = Row [fromInt 1]
-kings 2 = Row [fromInt 1, fromInt 2]
-kings i = Row $ [fromInt j, fromInt (j - 2) .. fromInt 1] ++ [fromInt 2, fromInt 4 .. fromInt i]
-              where j = if even i then i - 1 else i
+kings i = Row $ reverse [fromInt 1, fromInt 3 .. fromInt i] ++ [fromInt 2, fromInt 4 .. fromInt i]
 
 -- | Construct tittums on @n@ bells.
 tittums   :: Int -> Row
