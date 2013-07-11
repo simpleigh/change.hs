@@ -57,7 +57,7 @@ import qualified Data.List (transpose)
 newtype Row =
     Row { -- | Returns the row as a @Bell@ list.
           toList :: [Bell]
-    } deriving (Eq, Show, Read)
+    } deriving (Eq, Read)
 
 -- | Construct rounds on @n@ bells.
 rounds            :: Length -> Row
@@ -155,6 +155,9 @@ cycles _ = error "Not implemented"
 -- | Calculate the order of the row.
 order   :: Row -> Integer
 order _ = error "Not implemented"
+
+instance Show Row where
+    showsPrec _ r = foldl (.) id (map ((:) . toChar) (toList r))
 
 instance Ord Row where
     compare x y | cx /= cy  = compare cx cy
