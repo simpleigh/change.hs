@@ -13,8 +13,9 @@ module Data.Change.Row (
     kings,
     tittums,
     reverseRounds,
-    cyclic,
-    pblh,
+    cyclicLeadHead,
+    plainBobLeadHead,
+    fromNumber,
     
     -- * Accessing rows
     toList,
@@ -29,9 +30,10 @@ module Data.Change.Row (
     -- * Properties of rows
     bells,
     isRounds,
-    isPblh,
+    isPlainBobLeadhead,
+    isCyclicLeadHead,
     sign,
-    index,
+    number,
     cycles,
     order,
     
@@ -81,18 +83,22 @@ reverseRounds (Length n) = Row $ reverse [fromInt 1 .. fromInt n]
 
 -- | Construct a cyclic lead head.
 -- Computed as @(13456..2)^c@ on @n@ bells with @h@ hunt bells.
-cyclic       :: Length -- ^ Number of bells, @n@
-             -> Length -- ^ Number of hunt bells, @h@
-             -> Int -- ^ Lead head number, @c@
-             -> Row
-cyclic _ _ _ = error "Not implemented"
+cyclicLeadHead       :: Length -- ^ Number of bells, @n@
+                     -> Length -- ^ Number of hunt bells, @h@
+                     -> Int -- ^ Lead head number, @c@
+                     -> Row
+cyclicLeadHead _ _ _ = error "Not implemented"
 
 -- | Construct a plain bob lead head.
 -- Returns the first plain bob lead head on @n@ bells with @h@ hunt bells.
-pblh     :: Length -- ^ Number of bells, @n@
-         -> Length -- ^ Number of hunt bells, @h@
-         -> Row
-pblh _ _ = error "Not implemented"
+plainBobLeadHead     :: Length -- ^ Number of bells, @n@
+                     -> Length -- ^ Number of hunt bells, @h@
+                     -> Row
+plainBobLeadHead _ _ = error "Not implemented"
+
+-- | Generates a row from an index number.
+fromNumber   :: Integer -> Row
+fromNumber _ = error "Not implemented"
 
 -- | Retrieve a bell by index.
 getBell            :: Row -> Int -> Bell
@@ -127,18 +133,20 @@ isRounds   :: Row -> Bool
 isRounds r = r == (rounds . bells $ r)
 
 -- | Is the row a plain bob lead head?
-isPblh :: Row -- ^ Row
-       -> Length -- ^ Number of hunt bells, @h@
-       -> Maybe Length
-isPblh _ _ = error "Not implemented"
+isPlainBobLeadhead   :: Row -> Maybe (Length, Int)
+isPlainBobLeadhead _ = error "Not implemented"
+
+-- | Is the row a cyclic lead head?
+isCyclicLeadHead   :: Row -> Maybe (Length, Int)
+isCyclicLeadHead _ = error "Not implemented"
 
 -- | Is the row odd or even?
 sign   :: Row -> Parity
 sign _ = error "Not implemented"
 
--- | Calculates a unique index for the row
-index   :: Row -> Integer
-index _ = error "Not implemented"
+-- | Calculates a unique index number for the row
+number   :: Row -> Integer
+number _ = error "Not implemented"
 
 -- | Express the row as a product of disjoint cycles.
 cycles   :: Row -> [[Bell]]
@@ -153,8 +161,8 @@ instance Ord Row where
                 | otherwise = compare ix iy
         where cx = bells x
               cy = bells y
-              ix = index x
-              iy = index y
+              ix = number x
+              iy = number y
 
 -- | Type representing the length of a row
 newtype Length =
