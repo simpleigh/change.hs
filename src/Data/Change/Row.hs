@@ -23,6 +23,7 @@ module Data.Change.Row (
     
     -- * Row transpositions
     transpose,
+    divide,
     inverse,
     
     -- * Properties of rows
@@ -104,12 +105,18 @@ findBell (Row bs) b | toInt b > length bs = error "Bell out of range"
                     | otherwise           = (1+) $ length $ takeWhile (/= b) bs
 
 -- | Transpose a row by another
-transpose                 :: Row -> Row -> Row
-transpose (Row _) (Row _) = error "Not implemented"
+transpose     :: Row -> Row -> Row
+transpose x y | bells x /= bells y = error "Mismatched row length"
+              | otherwise          = Row [getBell x (toInt b) | b <- toList y]
+
+-- | Divide a row by another
+divide     :: Row -> Row -> Row
+divide x y | bells x /= bells y = error "Mismatched row length"
+           | otherwise          = transpose x (inverse y)
 
 -- | Find the inverse of a row
-inverse         :: Row -> Row
-inverse (Row _) = error "Not implemented"
+inverse   :: Row -> Row
+inverse r = Row [fromInt $ findBell r b | b <- toList $ rounds $ bells r]
 
 -- | How many bells are in the row?
 bells          :: Row -> Length
