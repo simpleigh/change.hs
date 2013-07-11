@@ -21,6 +21,10 @@ module Data.Change.Row (
     getBell,
     findBell,
     
+    -- * Row transpositions
+    transpose,
+    inverse,
+    
     -- * Properties of rows
     bells,
     isRounds,
@@ -39,7 +43,7 @@ module Data.Change.Row (
     ) where
 
 import Data.Change.Bell
-import Data.List (transpose)
+import qualified Data.List (transpose)
 
 -- | The row type
 -- A row is defined as a list of bells with the following restrictions:
@@ -67,7 +71,7 @@ kings (Length n) = Row $ reverse [fromInt 1, fromInt 3 .. fromInt n] ++ [fromInt
 
 -- | Construct tittums on @n@ bells.
 tittums            :: Length -> Row
-tittums (Length n) = Row $ concat $ transpose [[fromInt 1 .. fromInt half], [fromInt $ half + 1 .. fromInt n]]
+tittums (Length n) = Row $ concat $ Data.List.transpose [[fromInt 1 .. fromInt half], [fromInt $ half + 1 .. fromInt n]]
                          where half = (n + 1) `div` 2
 
 -- | Construct reverse rounds on @n@ bells.
@@ -98,6 +102,14 @@ getBell (Row bs) i = bs !! (i - 1)
 findBell                 :: Row -> Bell -> Int
 findBell (Row bs) b | toInt b > length bs = error "Bell out of range"
                     | otherwise           = (1+) $ length $ takeWhile (/= b) bs
+
+-- | Transpose a row by another
+transpose                 :: Row -> Row -> Row
+transpose (Row _) (Row _) = error "Not implemented"
+
+-- | Find the inverse of a row
+inverse         :: Row -> Row
+inverse (Row _) = error "Not implemented"
 
 -- | How many bells are in the row?
 bells          :: Row -> Length
