@@ -2,33 +2,54 @@
 -- Module     : Data.Change.Bell
 -- Copyright  : Copyright (C) 2013  Leigh Simpson <code@simpleigh.com>
 -- License    : GNU LGPL 2.1
---
+-- 
+-- This module provides the 'Bell' type and functions for manipulating bells.
 module Data.Change.Bell (
-    -- * Bell type
+    -- * Bell
     Bell(),
     
-    -- * Conversions to Int
+    -- ** Conversions
     fromInt,
     toInt,
-    
-    -- * Conversions to Char
     fromChar,
-    toChar
+    toChar,
     
     ) where
 
 import Data.List
 
+-----------------------------------------------------------------------------
+
 -- | The Bell data type.
 -- The lowest-level component of the library, representing an individual bell.
--- Internally a Bell is represented as an Int between 1 and 32.
--- Functions are provided for easy conversion between other types.
+-- Internally a bell is represented as an 'Int',
+-- but this is encapsulated and additional functionality provided:
+-- 
+-- * A bell is bounded, being between 1 and 32.
+--   The 'Bounded' typeclass provides access to 'maxBound' and 'minBound'
+-- 
+-- * 'Show' and 'Read' use the standardised bell lettering
+--   @1234567890ETABCDFGHJKLMNPQRSUVWY@.
+--
+-- * The 'Enum' typeclass is implemented completely.
+--
+-- * Additional functions allow easy conversion to other types.
 newtype Bell =
-    Bell { -- | Get Int bell number.
+    Bell { -- | Get the number of a bell.
+           -- 
+           -- >>> toInt $ read "E"
+           -- 11
            toInt :: Int
          } deriving (Eq, Ord)
 
--- | Make a bell from an Int bell number.
+-----------------------------------------------------------------------------
+
+-- | Make a bell from a number.
+-- 
+-- >>> fromInt 11
+-- E
+-- 
+-- An exception is thrown if the supplied number is outside the valid bounds.
 fromInt                 :: Int -> Bell
 fromInt i | i < minBell = error $ "Bell number must be >= " ++ show minBell
           | i > maxBell = error $ "Bell number must be <= " ++ show maxBell
@@ -36,21 +57,32 @@ fromInt i | i < minBell = error $ "Bell number must be >= " ++ show minBell
           where minBell = toInt (minBound :: Bell)
                 maxBell = toInt (maxBound :: Bell)
 
--- | Attempt to produce a bell from a Char.
--- The characters @1234567890ETABCDFGHJKLMNPQRSUVWY@ are used to represent
--- bells. Passing an invalid character will return @Nothing@.
+
+-- | Attempt to make a bell from a letter.
+-- 
+-- >>> fromChar 'E'
+-- Just E
 fromChar   :: Char -> Maybe Bell
 fromChar c = fmap (fromInt . (+1)) $ elemIndex c bellChars
 
--- | Get bell letter.
+
+-- | Get the letter associated with a bell.
+-- 
+-- >>> toChar $ fromInt 11
+-- 'E'
 toChar   :: Bell -> Char
 toChar x = bellChars !! (toInt x - 1)
 
+
+-- | Mapping of characters to bells.
 bellChars :: String
 bellChars = "1234567890ETABCDFGHJKLMNPQRSUVWY"
 
+-----------------------------------------------------------------------------
+
 instance Show Bell where
     showsPrec _ x = (:) $ toChar x
+
 
 instance Read Bell where
     readsPrec _ []     = []
@@ -58,9 +90,11 @@ instance Read Bell where
                              Just b  -> [(b, cs)]
                              Nothing -> []
 
+
 instance Bounded Bell where
     minBound = Bell 1
     maxBound = Bell $ length bellChars
+
 
 instance Enum Bell where
     succ x           = fromInt $ toInt x + 1
