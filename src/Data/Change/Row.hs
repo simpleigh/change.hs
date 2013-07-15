@@ -14,8 +14,8 @@ module Data.Change.Row (
     kings,
     tittums,
     reverseRounds,
-    cyclicLeadHead,
     plainBobLeadHead,
+    cyclicLeadHead,
     fromNumber,
     
     -- ** Accessing rows
@@ -95,6 +95,14 @@ reverseRounds            :: Length -> Row
 reverseRounds (Length n) = Row $ reverse [fromInt 1 .. fromInt n]
 
 
+-- | Construct a plain bob lead head.
+-- Returns the first plain bob lead head on @n@ bells with @h@ hunt bells.
+plainBobLeadHead     :: Length -- ^ Number of bells, @n@
+                     -> Length -- ^ Number of hunt bells, @h@
+                     -> Row
+plainBobLeadHead _ _ = error "Not implemented"
+
+
 -- | Construct a cyclic lead head.
 -- Computed as @(13456..2)^c@ on @n@ bells with @h@ hunt bells.
 cyclicLeadHead       :: Length -- ^ Number of bells, @n@
@@ -102,14 +110,6 @@ cyclicLeadHead       :: Length -- ^ Number of bells, @n@
                      -> Int -- ^ Lead head number, @c@
                      -> Row
 cyclicLeadHead _ _ _ = error "Not implemented"
-
-
--- | Construct a plain bob lead head.
--- Returns the first plain bob lead head on @n@ bells with @h@ hunt bells.
-plainBobLeadHead     :: Length -- ^ Number of bells, @n@
-                     -> Length -- ^ Number of hunt bells, @h@
-                     -> Row
-plainBobLeadHead _ _ = error "Not implemented"
 
 
 -- | Generates a row from an index number.
@@ -187,7 +187,7 @@ order _ = error "Not implemented"
 
 
 instance Show Row where
-    showsPrec _ r = foldl (.) id (map ((:) . toChar) (toList r))
+    showsPrec _ r = foldr (.) id (map ((:) . toChar) (toList r))
 
 
 instance Ord Row where
