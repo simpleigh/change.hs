@@ -9,6 +9,7 @@ module Data.Change.Row (
     Row(),
     
     -- ** Creating rows
+    fromList,
     rounds,
     queens,
     kings,
@@ -66,6 +67,11 @@ newtype Row =
     Row { -- | Returns the row as a @Bell@ list.
           toList :: [Bell]
     } deriving (Eq, Read)
+
+
+-- | Construct a row from a list of bells
+fromList     :: [Bell] -> Maybe Row
+fromList [bs] = error "Not implemented"
 
 
 -- | Construct rounds on @n@ bells.
