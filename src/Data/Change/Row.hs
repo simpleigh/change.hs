@@ -72,9 +72,12 @@ newtype Row =
 
 -- | Construct a row from a list of bells
 fromList    :: [Bell] -> Maybe Row
-fromList bs | (sort bs) == (roundsList bs) = Just $ Row bs
-            | otherwise                    = Nothing
-            where roundsList = toList . rounds . makeLength . length
+fromList [] = Nothing
+fromList bs | (length bs) > maxLength = Nothing
+            | (sort bs) == roundsList = Just $ Row bs
+            | otherwise               = Nothing
+            where maxLength  = toInt (maxBound :: Bell)
+                  roundsList = [fromInt 1 .. fromInt $ length bs]
 
 
 -- | Construct rounds on @n@ bells.
