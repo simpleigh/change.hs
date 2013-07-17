@@ -55,6 +55,7 @@ module Data.Change.Row (
     ) where
 
 import Data.Change.Bell
+import Data.List(sort)
 import qualified Data.List(transpose)
 
 -----------------------------------------------------------------------------
@@ -70,8 +71,10 @@ newtype Row =
 
 
 -- | Construct a row from a list of bells
-fromList     :: [Bell] -> Maybe Row
-fromList [bs] = error "Not implemented"
+fromList    :: [Bell] -> Maybe Row
+fromList bs | (sort bs) == (roundsList bs) = Just $ Row bs
+            | otherwise                    = Nothing
+            where roundsList = toList . rounds . makeLength . length
 
 
 -- | Construct rounds on @n@ bells.
