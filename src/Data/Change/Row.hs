@@ -56,6 +56,7 @@ module Data.Change.Row (
 
 import Data.Change.Bell
 import Data.List(sort)
+import Data.Maybe(fromJust, isNothing)
 import qualified Data.List(transpose)
 
 -----------------------------------------------------------------------------
@@ -67,7 +68,7 @@ import qualified Data.List(transpose)
 newtype Row =
     Row { -- | Returns the row as a @Bell@ list.
           toList :: [Bell]
-    } deriving (Eq, Read)
+    } deriving (Eq)
 
 
 -- | Construct a row from a list of bells
@@ -200,6 +201,16 @@ order _ = error "Not implemented"
 
 instance Show Row where
     showsPrec _ r = foldr (.) id (map ((:) . toChar) (toList r))
+
+
+instance Read Row where
+    readsPrec _ [] = []
+    readsPrec _ cs | or $ map isNothing maybeBellList = []
+                   | otherwise                        = case bellList of
+                                                            Just r  -> [(r, [])]
+                                                            Nothing -> []
+                   where maybeBellList = map fromChar cs
+                         bellList      = fromList $ map fromJust maybeBellList
 
 
 instance Ord Row where
