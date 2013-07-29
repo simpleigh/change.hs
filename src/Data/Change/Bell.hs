@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 -- |
 -- Module     : Data.Change.Bell
 -- Copyright  : Copyright (C) 2013  Leigh Simpson <code@simpleigh.com>
